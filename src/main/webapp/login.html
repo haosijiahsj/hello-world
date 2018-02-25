@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>login sample</title>
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <style>
+    .login-box {
+      width: 360px;
+      margin: auto;
+      margin-top: 50px;
+    }
+
+    .login-btn-box {
+      width: 100%;
+    }
+
+    .tip {
+      padding: 6px 10px;
+      background-color: #ecf8ff;
+      border-radius: 4px;
+      border-left: 5px solid #50bfff;
+      margin: 24px 0;
+    }
+
+    .tip p {
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="login-box">
+      <my-head></my-head>
+      <el-input placeholder="请输入用户名" suffix-icon="el-icon-edit" v-model="username">
+        <template slot="prepend">用户名：</template>
+      </el-input>
+      <br/>
+      <br/>
+      <el-input type="password" placeholder="请输入密码" suffix-icon="el-icon-edit" v-model="password">
+        <template slot="prepend">密&nbsp;&nbsp;&nbsp;码：</template>
+      </el-input>
+      <br/>
+      <br/>
+      <div class="login-btn-box">
+        <el-button type="primary" @click="login">登录</el-button>
+        <el-button size="mini" @click="reset">重置</el-button>
+      </div>
+      <br/>
+      <br/>
+    </div>
+  </div>
+</body>
+<!-- 先引入 Vue -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.4.0"></script>
+<script>
+  var head = {
+    template: "<div class='tip'><p>用户登录</p></div>"
+  };
+  Vue.component('my-head', head);
+  new Vue({
+    el: '#app',
+    data: {
+      username: '',
+      password: ''
+    },
+    methods: {
+      login() {
+        if (this.username == '') {
+          this.$message({
+            message: '请输入用户名！',
+            type: 'warning'
+          });
+          return;
+        }
+        if (this.password == '') {
+          this.$message({
+            message: '请输入密码！',
+            type: 'warning'
+          });
+          return;
+        }
+        if (this.password.length < 6) {
+          this.$message({
+            message: '密码长度为6位以上！',
+            type: 'warning'
+          });
+          return;
+        }
+        var url = '/user/login?username=' + this.username + '&password=' + this.password;
+        this.$http({
+          url: url,
+          method: 'get'
+        })
+          .then(function (res) {
+            var json = res.data;
+            if (json.code == 200) {
+              this.$message({
+                message: '登录成功！',
+                type: 'success'
+              });
+            } else {
+              this.$message.error(json.msg);
+            }
+          });
+      },
+      reset() {
+        this.username = '';
+        this.password = '';
+      }
+    }
+  })
+</script>
+
+</html>

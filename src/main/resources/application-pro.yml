@@ -1,0 +1,46 @@
+server:
+  port: 8089
+  session:
+    timeout: 1800
+  servlet-path: /
+management:
+  security:
+    enabled: false
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/hello-world?characterEncoding=utf-8
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
+    initial-size: 5
+    max-active: 150
+    max-wait: 60000
+    time-between-eviction-runs-millis: 60000
+    min-evictable-idle-time-millis: 300000
+    validation-query: SELECT 1
+    test-while-idle: true
+    test-on-borrow: false
+    test-on-return: false
+    filters: stat,wall,slf4j
+  jpa:
+    show-sql: false
+    properties:
+          hibernate:
+            dialect: org.hibernate.dialect.MySQL5Dialect
+    hibernate:
+      ddl-auto: update
+  mail:
+    host: smtp.qq.com
+    username: 1017547773@qq.com
+    password: xskkayunmzcdbfhe
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+  devtools:
+    restart:
+      additional-paths: src
