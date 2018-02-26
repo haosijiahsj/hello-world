@@ -94,12 +94,12 @@ export default {
     name: 'Main',
   data() {
     const item = {
-      date: "2016-05-02",
-      name: "王小虎",
-      address: "上海市普陀区金沙江路 1518 弄"
+      date: "1995-10-01",
+      name: "胡胜钧",
+      address: "成都市"
     };
     return {
-      tableData: Array(20).fill(item)
+      tableData: Array(1).fill(item)
     };
   }
 };

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/pages/Login'
+import Registry from '@/pages/Registry'
 import Main from '@/pages/Main'
 
 Vue.use(Router)
@@ -8,7 +9,7 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/main',
       name: 'Main',
       component: Main
     },
@@ -16,6 +17,11 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/registry',
+      name: 'Registry',
+      component: Registry
     }
   ]
 })

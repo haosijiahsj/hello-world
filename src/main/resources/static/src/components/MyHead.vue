@@ -4,11 +4,11 @@
 
 <script>
 export default {
-  name: "LoginHead",
-  data() {
-    return {
-      msg: "用户登录"
-    };
+  name: "MyHead",
+  props: {
+    msg: {
+      default: 'Hello World'
+    }
   }
 };
 </script>

@@ -8,6 +8,8 @@ import com.zzz.model.vo.UserVo;
  */
 public interface UserService {
 
+    void save(UserVo userVo);
+
     UserVo findByUsername(String username);
 
 }

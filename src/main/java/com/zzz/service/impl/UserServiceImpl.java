@@ -23,6 +23,17 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
+    public void save(UserVo userVo) {
+        Preconditions.checkArgument(userVo != null, "入参userVo不能为空！");
+
+        UserPo userPo = new UserPo();
+
+        BeanUtils.copyProperties(userVo, userPo);
+
+        userRepository.save(userPo);
+    }
+
+    @Override
     public UserVo findByUsername(String username) {
         Preconditions.checkArgument(StringUtils.isNotBlank(username), "入参username不能为空！");
 

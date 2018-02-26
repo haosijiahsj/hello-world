@@ -4,9 +4,7 @@ import com.zzz.model.vo.UserVo;
 import com.zzz.service.UserService;
 import com.zzz.support.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -34,6 +32,13 @@ public class UserController {
         }
 
         session.setAttribute("user", userVo);
+
+        return ResponseEntity.ok();
+    }
+
+    @PostMapping("/registry")
+    public ResponseEntity registry(@RequestBody UserVo userVo) {
+        userService.save(userVo);
 
         return ResponseEntity.ok();
     }
