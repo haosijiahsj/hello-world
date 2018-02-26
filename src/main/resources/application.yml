@@ -1,3 +1,5 @@
 spring:
   profiles:
     active: dev
+  resources:
+    static-locations: classpath:static/dist/

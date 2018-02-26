@@ -91,11 +91,11 @@
             <artifactId>joda-time</artifactId>
             <version>2.9.9</version>
         </dependency>
-        <!-- 命令行开发工具包 -->
+        <!-- 内存数据库 -->
         <dependency>
-            <groupId>commons-cli</groupId>
-            <artifactId>commons-cli</artifactId>
-            <version>1.4</version>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
         </dependency>
         <!-- fastjson -->
         <dependency>
@@ -116,11 +116,13 @@
         <!--<artifactId>spring-boot-devtools</artifactId>-->
         <!--<optional>true</optional>-->
         <!--</dependency>-->
+        <!-- groovy支持 -->
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
             <version>2.4.12</version>
         </dependency>
+        <!-- java标准controller层api -->
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>

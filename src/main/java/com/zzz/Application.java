@@ -12,8 +12,8 @@ import org.springframework.context.annotation.ImportResource;
  * @date 2/25 0025.
  */
 @Slf4j
-@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 @ImportResource("classpath:config/applicationContext.xml")
+@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 public class Application {
 
     public static void main(String[] args) {
