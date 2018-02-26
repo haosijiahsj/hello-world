@@ -82,7 +82,7 @@ export default {
             type: "success"
           });
           setTimeout(() => {
-            this.$router.push({ path: "/" });
+            this.$router.go({name: "/"});
           }, 2000);
         } else {
           this.$message.error(json.msg);
