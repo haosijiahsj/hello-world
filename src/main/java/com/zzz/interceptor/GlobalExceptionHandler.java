@@ -1,4 +1,4 @@
-package com.zzz.controller;
+package com.zzz.interceptor;
 
 import com.zzz.support.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
