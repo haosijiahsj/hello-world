@@ -122,12 +122,6 @@
             <artifactId>groovy-all</artifactId>
             <version>2.4.12</version>
         </dependency>
-        <!-- java标准controller层api -->
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-            <version>2.0.1</version>
-        </dependency>
     </dependencies>
     <!-- 使用spring-boot插件构建 -->
     <build>

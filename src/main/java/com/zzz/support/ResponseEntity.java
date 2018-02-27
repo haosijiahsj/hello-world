@@ -3,8 +3,8 @@ package com.zzz.support;
 
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.http.HttpStatus;
 
-import javax.ws.rs.core.Response.Status;
 import java.io.Serializable;
 
 /**
@@ -23,50 +23,50 @@ public class ResponseEntity implements Serializable {
 
     public static ResponseEntity ok() {
         return ResponseEntity.builder()
-                .code(Status.OK.getStatusCode())
-                .msg(Status.OK.getReasonPhrase())
+                .code(HttpStatus.OK.value())
+                .msg(HttpStatus.OK.getReasonPhrase())
                 .build();
     }
 
     public static ResponseEntity ok(Object content) {
         return ResponseEntity.builder()
-                .code(Status.OK.getStatusCode())
-                .msg(Status.OK.getReasonPhrase())
+                .code(HttpStatus.OK.value())
+                .msg(HttpStatus.OK.getReasonPhrase())
                 .content(content)
                 .build();
     }
 
     public static ResponseEntity noContent() {
         return ResponseEntity.builder()
-                .code(Status.NO_CONTENT.getStatusCode())
-                .msg(Status.NO_CONTENT.getReasonPhrase())
+                .code(HttpStatus.NO_CONTENT.value())
+                .msg(HttpStatus.NO_CONTENT.getReasonPhrase())
                 .build();
     }
 
     public static ResponseEntity serverError() {
         return ResponseEntity.builder()
-                .code(Status.INTERNAL_SERVER_ERROR.getStatusCode())
-                .msg(Status.INTERNAL_SERVER_ERROR.getReasonPhrase())
+                .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .msg(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
                 .build();
     }
 
     public static ResponseEntity serverError(String exceptionMsg) {
         return ResponseEntity.builder()
-                .code(Status.INTERNAL_SERVER_ERROR.getStatusCode())
+                .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .msg(exceptionMsg)
                 .build();
     }
 
-    public static ResponseEntity of(Status status) {
+    public static ResponseEntity of(HttpStatus status) {
         return ResponseEntity.builder()
-                .code(status.getStatusCode())
+                .code(status.value())
                 .msg(status.getReasonPhrase())
                 .build();
     }
 
-    public static ResponseEntity of(Status status, Object content) {
+    public static ResponseEntity of(HttpStatus status, Object content) {
         return ResponseEntity.builder()
-                .code(status.getStatusCode())
+                .code(status.value())
                 .msg(status.getReasonPhrase())
                 .content(content)
                 .build();
