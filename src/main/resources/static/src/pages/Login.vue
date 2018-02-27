@@ -88,23 +88,6 @@ export default {
         .catch(error => {
           this.$message.error(error);
         });
-      // this.$http({
-      //   url: url,
-      //   method: "get"
-      // }).then(function(res) {
-      //   var json = res.data;
-      //   if (json.code == 200) {
-      //     this.$message({
-      //       message: "登录成功！",
-      //       type: "success"
-      //     });
-      //     setTimeout(() => {
-      //       this.$router.push({path: '/main'});
-      //     }, 2000);
-      //   } else {
-      //     this.$message.error(json.msg);
-      //   }
-      // });
     },
     reset() {
       this.username = "";
