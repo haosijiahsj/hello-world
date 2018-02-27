@@ -62,28 +62,49 @@ export default {
         });
         return;
       }
-      var url =
-        process.env.API_HOST+ "/user/login?username=" +
-        this.username +
-        "&password=" +
-        this.password;
-      this.$http({
-        url: url,
-        method: "get"
-      }).then(function(res) {
-        var json = res.data;
-        if (json.code == 200) {
-          this.$message({
-            message: "登录成功！",
-            type: "success"
-          });
-          setTimeout(() => {
-            this.$router.push({path: '/main'});
-          }, 2000);
-        } else {
-          this.$message.error(json.msg);
+      let self = this;
+      console.log(process.env.API_HOST);
+      var url = process.env.API_HOST + "/user/login";
+      this.$axios.get(url, {
+        params: {
+          username: self.username,
+          password: self.password
         }
-      });
+      })
+        .then(res => {
+          var json = res.data;
+          if (json.code == 200) {
+            this.$message({
+              message: "登录成功！",
+              type: "success"
+            });
+            setTimeout(() => {
+              this.$router.push({ path: "/main" });
+            }, 2000);
+          } else {
+            this.$message.error(json.msg);
+          }
+        })
+        .catch(error => {
+          this.$message.error(error);
+        });
+      // this.$http({
+      //   url: url,
+      //   method: "get"
+      // }).then(function(res) {
+      //   var json = res.data;
+      //   if (json.code == 200) {
+      //     this.$message({
+      //       message: "登录成功！",
+      //       type: "success"
+      //     });
+      //     setTimeout(() => {
+      //       this.$router.push({path: '/main'});
+      //     }, 2000);
+      //   } else {
+      //     this.$message.error(json.msg);
+      //   }
+      // });
     },
     reset() {
       this.username = "";
@@ -111,7 +132,7 @@ export default {
   color: #ddd;
 }
 .registry-tip-box a {
-  color: #409EFF;
+  color: #409eff;
   text-decoration: none;
 }
 </style>

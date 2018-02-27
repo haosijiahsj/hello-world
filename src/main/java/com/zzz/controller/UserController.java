@@ -38,6 +38,11 @@ public class UserController {
 
     @PostMapping("/registry")
     public ResponseEntity registry(@RequestBody UserVo userVo) {
+        UserVo oldUserVo = userService.findByUsername(userVo.getUsername());
+
+        if (oldUserVo != null) {
+            return ResponseEntity.of(301, "用户已经存在！");
+        }
         userService.save(userVo);
 
         return ResponseEntity.ok();

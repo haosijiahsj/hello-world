@@ -1,8 +1,5 @@
 server:
   port: 8089
-  session:
-    timeout: 1800
-  servlet-path: /
 management:
   security:
     enabled: false

@@ -83,15 +83,15 @@ export default {
         return;
       }
       var url = process.env.API_HOST+ "/user/registry";
-      var that = this;
-      this.$http({
+      var self = this;
+      this.$axios({
         url: url,
         method: "post",
         data: {
-            username: that.username,
-            password: that.password
+            username: self.username,
+            password: self.password
         }
-      }).then(function(res) {
+      }).then((res) => {
         var json = res.data;
         if (json.code == 200) {
           this.$message({
@@ -104,7 +104,10 @@ export default {
         } else {
           this.$message.error(json.msg);
         }
-      });
+      })
+        .catch((res) => {
+          this.$message.error(res);
+        });
     },
     reset() {
       this.username = "";
