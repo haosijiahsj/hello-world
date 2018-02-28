@@ -16,8 +16,7 @@
       <br/>
       <br/>
       <div class="login-btn-box">
-        <el-button type="primary" @click="login">登录</el-button>
-        <el-button size="mini" @click="reset">重置</el-button>
+        <el-button class="login-btn" type="primary" @click="login">登录</el-button>
       </div>
       <br/>
       <br/>
@@ -79,7 +78,7 @@ export default {
               type: "success"
             });
             setTimeout(() => {
-              this.$router.push({ path: "/main" });
+              this.$router.push({ path: "/main/dashboard" });
             }, 2000);
           } else {
             this.$message.error(json.msg);
@@ -88,10 +87,6 @@ export default {
         .catch(error => {
           this.$message.error(error);
         });
-    },
-    reset() {
-      this.username = "";
-      this.password = "";
     }
   }
 };
@@ -105,6 +100,10 @@ export default {
 }
 
 .login-btn-box {
+  width: 100%;
+}
+
+.login-btn {
   width: 100%;
 }
 

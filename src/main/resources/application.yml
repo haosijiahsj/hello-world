@@ -7,3 +7,5 @@ spring:
     active: dev
   resources:
     static-locations: classpath:static/dist/
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss

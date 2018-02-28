@@ -17,8 +17,10 @@
 <script>
 export default {
   name: "UserCreate",
-  data: () => {
-    msg: "";
+  data() {
+    return {
+      username: ''
+    }
   }
 };
 </script>

@@ -1,7 +1,11 @@
 package com.zzz.dao;
 
 import com.zzz.model.po.UserPo;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
+
+import java.util.List;
 
 /**
  * @author 胡胜钧
@@ -13,6 +17,10 @@ public interface UserRepository extends Repository<UserPo, Integer> {
 
     UserPo findByUsername(String username);
 
-    UserPo findByUsernameAndPassword(String username, String password);
+    @Modifying
+    @Query("UPDATE UserPo u SET u.password = ?2 WHERE u.username = ?1")
+    void updatePassword(String username, String password);
+
+    List<UserPo> findAll();
 
 }

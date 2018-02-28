@@ -13,9 +13,11 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .tip {
-    padding: 6px 10px;
+    height: 55px;
+    line-height: 55px;
+    padding-left: 10px;
     background-color: #ecf8ff;
     border-radius: 4px;
     border-left: 5px solid #50bfff;

@@ -5,21 +5,25 @@
           <el-breadcrumb-item>用户</el-breadcrumb-item>
           <el-breadcrumb-item>查询用户</el-breadcrumb-item>
         </el-breadcrumb>
+        <div class="query-box">
+          <el-input class="query-inp" size="small" v-model="queryValue" placeholder="请输入用户名"></el-input>
+          <el-button type="primary" icon="el-icon-search" size="small" @click="query"></el-button>
+        </div>
         <el-table :data="tableData" border stripe highlight-current-row>
+            <el-table-column header-align="center" align="center" prop="username" label="账号" width="180">
+            </el-table-column>
             <el-table-column header-align="center" align="center" prop="name" label="姓名" width="180">
-            <template slot-scope="scope">
-                <el-popover trigger="hover" placement="top">
-                <p>姓名: {{ scope.row.name }}</p>
-                <p>地址: {{ scope.row.address }}</p>
-                <div slot="reference" class="name-wrapper">
-                    <el-tag size="medium">{{ scope.row.name }}</el-tag>
-                </div>
-                </el-popover>
-            </template>
             </el-table-column>
-            <el-table-column header-align="center" align="center" prop="date" label="出生日期" width="140">
+            <el-table-column header-align="center" align="center" prop="tel" label="电话">
             </el-table-column>
-            <el-table-column header-align="center" align="center" prop="address" label="地址">
+            <el-table-column header-align="center" align="center" prop="createTime" label="创建时间">
+            </el-table-column>
+            <el-table-column header-align="center" align="center" prop="status" label="状态" width="100">
+                <template slot-scope="scope">
+                    <el-tag size="medium" :type="scope.row.status == 1 ? 'success' : 'danger'">
+                        {{ scope.row.status == 1 ? '可用' : '禁用' }}
+                    </el-tag>
+                </template>
             </el-table-column>
             <el-table-column header-align="center" align="center" label="操作" width="180">
             <template slot-scope="scope">
@@ -35,18 +39,46 @@
 export default {
   name: "UserQuery",
   data() {
-    const item = {
-      date: "1995-10-01",
-      name: "胡胜钧",
-      address: "四川省成都市"
-    };
     return {
-      tableData: Array(10).fill(item)
+      queryValue: '',
+      tableData: []
     };
+  },
+  methods: {
+      query() {          
+          var self = this;
+          let queryValue = this.queryValue;
+          var url = process.env.API_HOST + "/user";
+          if (queryValue == "") {
+              url += "/findAll";
+          } else {
+              url = url + "/findByUsername?username=" + queryValue;
+          }
+          this.tableData = [];
+          this.$axios.get(url)
+        .then(res => {
+            var content = res.data.content;
+        
+            if (content instanceof Array) {
+                self.tableData = content;
+            } else {
+                self.tableData = new Array(content);
+            }            
+        })
+        .catch(res => {});
+      }
   }
 };
 </script>
 
 <style scoped>
+  .query-box {
+      width: 100%;
+      margin-top: 15px;
+      margin-bottom: 12px;
+  }
 
+  .query-inp {
+      width: 200px;
+  }
 </style>

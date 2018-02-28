@@ -48,4 +48,21 @@ public class UserController {
         return ResponseEntity.ok();
     }
 
+    @PostMapping("/updatePassword")
+    public ResponseEntity updatePassword(@RequestBody UserVo userVo) {
+        userService.updatePassword(userVo);
+
+        return ResponseEntity.ok();
+    }
+
+    @GetMapping("/findAll")
+    public ResponseEntity findAll() {
+        return ResponseEntity.ok(userService.findAll());
+    }
+
+    @GetMapping("/findByUsername")
+    public ResponseEntity findByUsername(String username) {
+        return ResponseEntity.ok(userService.findByUsername(username));
+    }
+
 }

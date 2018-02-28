@@ -21,8 +21,7 @@
       <br/>
       <br/>
       <div class="login-btn-box">
-        <el-button type="primary" @click="registry">立即注册</el-button>
-        <el-button size="mini" @click="reset">重置</el-button>
+        <el-button class="registry-btn" type="primary" @click="registry">立即注册</el-button>
       </div>
       <br/>
       <br/>
@@ -108,10 +107,6 @@ export default {
         .catch((res) => {
           this.$message.error(res);
         });
-    },
-    reset() {
-      this.username = "";
-      this.password = "";
     }
   }
 };
@@ -125,6 +120,10 @@ export default {
 }
 
 .login-btn-box {
+  width: 100%;
+}
+
+.registry-btn {
   width: 100%;
 }
 

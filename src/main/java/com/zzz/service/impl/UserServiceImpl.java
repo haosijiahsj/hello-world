@@ -5,11 +5,16 @@ import com.zzz.dao.UserRepository;
 import com.zzz.model.po.UserPo;
 import com.zzz.model.vo.UserVo;
 import com.zzz.service.UserService;
+import com.zzz.utils.ConvertUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author 胡胜钧
@@ -48,6 +53,21 @@ public class UserServiceImpl implements UserService {
         BeanUtils.copyProperties(userPo, userVo);
 
         return userVo;
+    }
+
+    @Override
+    public void updatePassword(UserVo userVo) {
+        Preconditions.checkArgument(userVo != null, "入参userVo不能为空！");
+
+        userRepository.updatePassword(userVo.getUsername(), userVo.getPassword());
+    }
+
+    @Override
+    public List<UserVo> findAll() {
+        List<UserPo> userPos = userRepository.findAll();
+
+        return CollectionUtils.isEmpty(userPos) ? Collections.emptyList()
+                : ConvertUtils.convertPos2Vos(userPos, UserVo.class);
     }
 
 }
