@@ -16,4 +16,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.el-breadcrumb {
+  margin-bottom: 20px;
+}
 </style>
