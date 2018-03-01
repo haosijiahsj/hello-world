@@ -32,6 +32,17 @@
             </template>
             </el-table-column>
         </el-table>
+        <div class="pag-box">
+        <el-pagination            
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="pageSizes"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total">
+        </el-pagination>
+        </div>
     </div>
 </template>
 
@@ -41,7 +52,11 @@ export default {
   data() {
     return {
       queryValue: '',
-      tableData: []
+      tableData: [],
+      currentPage: 1,
+      pageSizes: [10, 20, 30],
+      pageSize: 10,
+      total: 50
     };
   },
   methods: {
@@ -80,5 +95,11 @@ export default {
 
   .query-inp {
       width: 200px;
+  }
+
+  .el-pagination {
+      text-align: right;
+      margin-top: 5px;
+      margin-bottom: 20px;
   }
 </style>
