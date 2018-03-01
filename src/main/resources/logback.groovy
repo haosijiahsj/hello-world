@@ -7,7 +7,7 @@ import java.nio.charset.Charset
 import static ch.qos.logback.classic.Level.*
 
 scan("60 seconds")
-def appName = "graduate-design"
+def appName = "hello-world"
 def fileLogPattern = "%date{yyyy-MM-dd HH:mm:ss.SSS} -%5level [%15.15thread] %-40.40logger{39} : %msg%n"
 def stdoutLogPattern = "%date{yyyy-MM-dd HH:mm:ss.SSS} -%highlight(%6level) [%15.15thread] %-40.40logger{39} : %msg%n"
 
