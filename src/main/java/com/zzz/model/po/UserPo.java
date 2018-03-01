@@ -27,6 +27,9 @@ public class UserPo {
     @Column(name = "name_")
     private String name;
 
+    @Column(name = "sex")
+    private Integer sex;
+
     @Column(name = "tel")
     private String tel;
 

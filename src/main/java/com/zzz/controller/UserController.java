@@ -4,9 +4,12 @@ import com.zzz.model.vo.UserVo;
 import com.zzz.service.UserService;
 import com.zzz.support.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 
 /**
  * @author 胡胜钧
@@ -60,9 +63,27 @@ public class UserController {
         return ResponseEntity.ok(userService.findAll());
     }
 
+    @GetMapping("/findUserByPage")
+    public ResponseEntity findAllByPage(String username, int page, int size) {
+        Pageable pageable = new PageRequest(page - 1, size);
+
+        return ResponseEntity.ok(userService.findUser(username, pageable));
+    }
+
     @GetMapping("/findByUsername")
     public ResponseEntity findByUsername(String username) {
         return ResponseEntity.ok(userService.findByUsername(username));
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity create(@RequestBody UserVo userVo) {
+        userVo.setCreateTime(LocalDateTime.now());
+        userVo.setUpdateTime(LocalDateTime.now());
+        userVo.setStatus(1);
+
+        userService.save(userVo);
+
+        return ResponseEntity.ok();
     }
 
 }

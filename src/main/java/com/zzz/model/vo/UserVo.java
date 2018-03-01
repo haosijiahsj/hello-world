@@ -15,6 +15,7 @@ public class UserVo {
     private String username;
     private String password;
     private String name;
+    private Integer sex;
     private String tel;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;

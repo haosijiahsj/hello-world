@@ -1,52 +1,32 @@
 <template>
   <div class="create-user-box">
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/main' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/main/dashboard' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>用户</el-breadcrumb-item>
       <el-breadcrumb-item>创建用户</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-form ref="form" :model="form" label-width="80px">
-      <el-form-item label="活动名称">
+    <el-form :model="form" ref="form" status-icon :rules="rules" label-width="80px">
+      <el-form-item label="用户名：" prop="username">
+        <el-input v-model="form.username"></el-input>
+      </el-form-item>
+      <el-form-item label="密码：" prop="password">
+        <el-input v-model="form.password"></el-input>
+      </el-form-item>
+      <el-form-item label="姓名：" prop="name">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
-      <el-form-item label="活动区域">
-        <el-select v-model="form.region" placeholder="请选择活动区域">
-          <el-option label="区域一" value="shanghai"></el-option>
-          <el-option label="区域二" value="beijing"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="活动时间">
-        <el-col :span="11">
-          <el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>
-        </el-col>
-        <el-col class="line" :span="2">-</el-col>
-        <el-col :span="11">
-          <el-time-picker type="fixed-time" placeholder="选择时间" v-model="form.date2" style="width: 100%;"></el-time-picker>
-        </el-col>
-      </el-form-item>
-      <el-form-item label="即时配送">
-        <el-switch v-model="form.delivery"></el-switch>
-      </el-form-item>
-      <el-form-item label="活动性质">
-        <el-checkbox-group v-model="form.type">
-          <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-          <el-checkbox label="地推活动" name="type"></el-checkbox>
-          <el-checkbox label="线下主题活动" name="type"></el-checkbox>
-          <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-        </el-checkbox-group>
-      </el-form-item>
-      <el-form-item label="特殊资源">
-        <el-radio-group v-model="form.resource">
-          <el-radio label="线上品牌商赞助"></el-radio>
-          <el-radio label="线下场地免费"></el-radio>
+      <el-form-item label="性别：">
+        <el-radio-group v-model="form.sex">
+          <el-radio label="1">男</el-radio>
+          <el-radio label="0">女</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="活动形式">
-        <el-input type="textarea" v-model="form.desc"></el-input>
+      <el-form-item label="电话：" prop="tel">
+        <el-input v-model="form.tel"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">立即创建</el-button>
-        <el-button>取消</el-button>
+        <el-button type="primary" @click="submit('form')">立即创建</el-button>
+        <el-button @click="reset('form')" plain size="medium">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -54,22 +34,78 @@
 <script>
   export default {
     data() {
+      var checkUsername = (rule, value, callback) => {
+        var url = process.env.API_HOST + "/user/findByUsername?username=" + value;
+          this.$axios.get(url)
+          .then((res) => {
+            if (res.data.content != null) {
+              callback(new Error('用户名已存在，请重新输入！'));
+            } else {
+              callback();
+            }
+          })
+          .catch((error) => {
+            callback(new Error(error));
+          });
+      };
       return {
         form: {
+          username: '',
+          password: '',
           name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
-        }
-      }
-    },
+          sex: '1',
+          tel: ''
+        },
+        rules: {
+          username: [
+            { required: true, message: '请输入用户名', trigger: 'blur' },
+            { validator: checkUsername, trigger: 'blur' }
+          ],
+          password: [
+            { required: true, message: '请输入密码', trigger: 'blur' },
+            { min: 6, message: '长度在6位以上', trigger: 'blur' }
+          ],
+          name: [
+            { required: true, message: '请输入姓名', trigger: 'blur' }
+          ],
+          tel: [
+            { min: 11, message: '长度11位以上', trigger: 'blur' },
+            { pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur' }
+          ]
+        },
+      }      
+    },    
     methods: {
-      onSubmit() {
-        console.log('submit!');
+      submit(formName) {
+        self = this;
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            var url = process.env.API_HOST + "/user/create";
+            this.$axios.post(url, JSON.stringify(self.form), {headers: {"Content-Type": "application/json"}})
+            .then((res) => {
+              if (res.data.code == 200) {
+                this.$message({
+                  message: '创建成功！',
+                  type: 'success'
+                });
+                setTimeout(() => {
+                  self.$refs[formName].resetFields();
+                }, 2000);                
+              } else {
+                this.$message.error(res.data.msg);
+              }
+            })
+            .catch((error) => {
+              this.$message.error(error);
+            });
+          } else {
+            this.$message.error('请完成表单必填项！');
+            return false;
+          }
+        });
+      },
+      reset(formName) {
+        this.$refs[formName].resetFields();
       }
     }
   }

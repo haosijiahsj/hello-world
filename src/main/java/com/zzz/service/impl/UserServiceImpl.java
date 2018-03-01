@@ -1,16 +1,19 @@
 package com.zzz.service.impl;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import com.zzz.dao.UserRepository;
 import com.zzz.model.po.UserPo;
 import com.zzz.model.vo.UserVo;
 import com.zzz.service.UserService;
+import com.zzz.support.PageResult;
 import com.zzz.utils.ConvertUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -68,6 +71,42 @@ public class UserServiceImpl implements UserService {
 
         return CollectionUtils.isEmpty(userPos) ? Collections.emptyList()
                 : ConvertUtils.convertPos2Vos(userPos, UserVo.class);
+    }
+
+    @Override
+    public PageResult<UserVo> findAll(Pageable pageable) {
+        Preconditions.checkArgument(pageable != null, "入参pageable不能为空！");
+
+        return ConvertUtils.convertPage(userRepository.findAll(pageable), UserVo.class);
+    }
+
+    @Override
+    public PageResult<UserVo> findUser(String username, Pageable pageable) {
+        Preconditions.checkArgument(pageable != null, "入参pageable不能为空！");
+
+        if (StringUtils.isNotEmpty(username)) {
+            UserPo userPo = userRepository.findByUsername(username);
+
+            PageResult<UserVo> pageResult = new PageResult<>();
+            pageResult.setCurPage(pageable.getPageNumber() + 1);
+            pageResult.setSize(pageable.getPageSize());
+            pageResult.setTotalElements(1L);
+            pageResult.setTotalPages(1);
+
+            if (userPo == null) {
+                pageResult.setTotalElements(0L);
+                pageResult.setTotalPages(0);
+                pageResult.setContent(Collections.emptyList());
+            } else {
+                UserVo userVo = new UserVo();
+                BeanUtils.copyProperties(userPo, userVo);
+                pageResult.setContent(Lists.newArrayList(userVo));
+            }
+
+            return pageResult;
+        }
+
+        return ConvertUtils.convertPage(userRepository.findAll(pageable), UserVo.class);
     }
 
 }

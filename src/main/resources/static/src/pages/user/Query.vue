@@ -14,6 +14,13 @@
             </el-table-column>
             <el-table-column header-align="center" align="center" prop="name" label="姓名" width="180">
             </el-table-column>
+            <el-table-column header-align="center" align="center" prop="sex" label="性别" width="80">
+                <template slot-scope="scope">
+                    <el-tag size="medium" :type="scope.row.sex == 1 ? 'success' : 'danger'">
+                        {{ scope.row.sex == 1 ? '男' : '女' }}
+                    </el-tag>
+                </template>
+            </el-table-column>
             <el-table-column header-align="center" align="center" prop="tel" label="电话">
             </el-table-column>
             <el-table-column header-align="center" align="center" prop="createTime" label="创建时间">
@@ -33,7 +40,7 @@
             </el-table-column>
         </el-table>
         <div class="pag-box">
-            <el-pagination            
+            <el-pagination
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 :current-page="currentPage"
@@ -54,33 +61,45 @@ export default {
       queryValue: '',
       tableData: [],
       currentPage: 1,
-      pageSizes: [10, 20, 30],
+      pageSizes: [10, 20],
       pageSize: 10,
-      total: 50
+      total: 0
     };
   },
   methods: {
-      query() {          
-          var self = this;
-          let queryValue = this.queryValue;
-          var url = process.env.API_HOST + "/user";
-          if (queryValue == "") {
-              url += "/findAll";
-          } else {
-              url = url + "/findByUsername?username=" + queryValue;
-          }
+      loadData(username, page, size) {
+          var url = process.env.API_HOST + "/user/findUserByPage";
           this.tableData = [];
-          this.$axios.get(url)
-        .then(res => {
-            var content = res.data.content;
-        
-            if (content instanceof Array) {
-                self.tableData = content;
-            } else {
-                self.tableData = new Array(content);
-            }            
+          this.$axios.get(url, {
+            params: {
+                username: username,
+                page: page,
+                size: size
+            }
         })
-        .catch(res => {});
+        .then(res => {
+            var json = res.data.content;
+            if (res.data.code == 200) {
+                this.tableData = json.content;
+                this.total = json.totalElements; 
+            } else {
+                this.$message.error(res.data.msg);
+            }                    
+        })
+        .catch(err => {
+            this.$message.error(err);
+        });
+      },
+      query() {          
+          this.loadData(this.queryValue, this.currentPage, this.pageSize)
+      },
+      handleSizeChange(val) {
+          this.pageSize = val;
+          this.loadData(this.queryValue, this.currentPage, this.pageSize);
+      },
+      handleCurrentChange(val) {
+          this.currentPage = val;
+          this.loadData(this.queryValue, this.currentPage, this.pageSize);
       }
   }
 };
