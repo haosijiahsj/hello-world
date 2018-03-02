@@ -20,7 +20,7 @@ public interface UserService {
 
     List<UserVo> findAll();
 
-    PageResult<UserVo> findAll(Pageable pageable);
+    PageResult<UserVo> findAll(UserVo userVo, Pageable pageable);
 
     PageResult<UserVo> findUser(String username, Pageable pageable);
 

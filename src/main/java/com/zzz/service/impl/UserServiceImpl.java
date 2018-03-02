@@ -13,9 +13,15 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.Collections;
 import java.util.List;
 
@@ -74,10 +80,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PageResult<UserVo> findAll(Pageable pageable) {
+    public PageResult<UserVo> findAll(UserVo userVo, Pageable pageable) {
         Preconditions.checkArgument(pageable != null, "入参pageable不能为空！");
 
-        return ConvertUtils.convertPage(userRepository.findAll(pageable), UserVo.class);
+        UserPo userPo = new UserPo();
+        BeanUtils.copyProperties(userVo, userPo);
+
+        Page<UserPo> userPoPage = userRepository.findAll(this.buildSpecification(userPo), pageable);
+
+        return ConvertUtils.convertPage(userPoPage, UserVo.class);
     }
 
     @Override
@@ -107,6 +118,26 @@ public class UserServiceImpl implements UserService {
         }
 
         return ConvertUtils.convertPage(userRepository.findAll(pageable), UserVo.class);
+    }
+
+    /**
+     * 创建动态查询条件
+     * @param userPo
+     * @return
+     */
+    private Specification<UserPo> buildSpecification(UserPo userPo) {
+        return (Specification<UserPo>) (root, criteriaQuery, criteriaBuilder) -> {
+            List<Predicate> predicates = Lists.newArrayList();
+
+            if (StringUtils.isNotEmpty(userPo.getUsername())) {
+                predicates.add(criteriaBuilder.like(root.get("username"), "%" + userPo.getUsername() + "%"));
+            }
+            if (StringUtils.isNotEmpty(userPo.getName())) {
+                predicates.add(criteriaBuilder.like(root.get("name"), "%" + userPo.getName() + "%"));
+            }
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
     }
 
 }

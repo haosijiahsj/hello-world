@@ -5,8 +5,8 @@ import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -41,7 +41,7 @@ public class DruidConfig {
 
     @Bean
     public ServletRegistrationBean druidServlet() {
-        ServletRegistrationBean reg = new ServletRegistrationBean();
+        ServletRegistrationBean<StatViewServlet> reg = new ServletRegistrationBean<>();
         reg.setServlet(new StatViewServlet());
         reg.addUrlMappings(DRUID_URL);
         reg.addInitParameter("loginUsername", username);
@@ -52,7 +52,7 @@ public class DruidConfig {
 
     @Bean
     public FilterRegistrationBean druidFilter() {
-        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+        FilterRegistrationBean<WebStatFilter> filterRegistrationBean = new FilterRegistrationBean<>();
         filterRegistrationBean.setFilter(new WebStatFilter());
         filterRegistrationBean.addUrlPatterns(URL_PATTERNS);
         filterRegistrationBean.addInitParameter("exclusions", EXCLUSIONS);

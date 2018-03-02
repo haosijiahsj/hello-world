@@ -65,9 +65,11 @@ public class UserController {
 
     @GetMapping("/findUserByPage")
     public ResponseEntity findAllByPage(String username, int page, int size) {
-        Pageable pageable = new PageRequest(page - 1, size);
+        Pageable pageable = PageRequest.of(page - 1, size);
 
-        return ResponseEntity.ok(userService.findUser(username, pageable));
+        UserVo userVo = new UserVo();
+        userVo.setUsername(username);
+        return ResponseEntity.ok(userService.findAll(userVo, pageable));
     }
 
     @GetMapping("/findByUsername")

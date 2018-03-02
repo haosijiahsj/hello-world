@@ -1,8 +1,5 @@
 server:
   port: 8089
-management:
-  security:
-    enabled: false
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
@@ -22,11 +19,6 @@ spring:
     filters: stat,wall,slf4j
   jpa:
     show-sql: false
-    properties:
-          hibernate:
-            dialect: org.hibernate.dialect.MySQL5Dialect
-    hibernate:
-      ddl-auto: update
   mail:
     host: smtp.qq.com
     username: 1017547773@qq.com
@@ -38,6 +30,3 @@ spring:
           starttls:
             enable: true
             required: true
-  devtools:
-    restart:
-      additional-paths: src
