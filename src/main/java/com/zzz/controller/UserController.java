@@ -64,7 +64,7 @@ public class UserController {
     }
 
     @GetMapping("/findUserByPage")
-    public ResponseEntity findAllByPage(String username, int page, int size) {
+    public ResponseEntity findAllByPage(String username, Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page - 1, size);
 
         UserVo userVo = new UserVo();
@@ -84,6 +84,13 @@ public class UserController {
         userVo.setStatus(1);
 
         userService.save(userVo);
+
+        return ResponseEntity.ok();
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity delete(Integer id) {
+        userService.delete(id);
 
         return ResponseEntity.ok();
     }

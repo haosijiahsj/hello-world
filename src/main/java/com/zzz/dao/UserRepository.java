@@ -28,4 +28,6 @@ public interface UserRepository extends Repository<UserPo, Integer>, JpaSpecific
 
     Page<UserPo> findAll(Pageable pageable);
 
+    void deleteById(Integer id);
+
 }

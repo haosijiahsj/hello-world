@@ -24,4 +24,6 @@ public interface UserService {
 
     PageResult<UserVo> findUser(String username, Pageable pageable);
 
+    void delete(Integer id);
+
 }

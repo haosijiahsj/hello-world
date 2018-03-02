@@ -120,6 +120,13 @@ public class UserServiceImpl implements UserService {
         return ConvertUtils.convertPage(userRepository.findAll(pageable), UserVo.class);
     }
 
+    @Override
+    public void delete(Integer id) {
+        Preconditions.checkArgument(id != null, "入参id不能为空！");
+
+        userRepository.deleteById(id);
+    }
+
     /**
      * 创建动态查询条件
      * @param userPo
