@@ -1,21 +1,10 @@
 <template>
-  <el-container style="height: 100%; border: 1px solid #eee">
-    <el-header class="top-nav-header">
-      <el-menu class="top-nav-menu" mode="horizontal">
-        <el-menu-item index="1">处理中心</el-menu-item>
-        <el-menu-item index="2">我的工作台</el-menu-item>
-        <el-menu-item index="3">消息中心</el-menu-item>
-        <el-menu-item index="4">订单管理</el-menu-item>
-        <el-submenu index="5" style="float: right;">
-          <template slot="title">胡胜钧</template>
-          <el-menu-item index="5-1"><Icon type="edit"></Icon>&nbsp;&nbsp;修改密码</el-menu-item>
-          <el-menu-item index="5-2"><Icon type="log-out"></Icon>&nbsp;&nbsp;退出登录</el-menu-item>
-        </el-submenu>
-      </el-menu>
-    </el-header>
-    <el-container>
+  <el-container style="border: 1px solid #eee; height: 100%;">
       <el-aside width="200px">
-        <el-menu router :default-active="$route.path" class="left-nav-menu">
+        <el-menu router :default-active="$route.path" :collapse="isCollapse" class="left-nav-menu">
+          <div class="left-nav-header-box">
+            <span><Icon type="ionic"></Icon>&nbsp;&nbsp;&nbsp;Hello World</span>
+          </div>
           <el-menu-item index="/main/dashboard">
             <Icon type="home" size="18"></Icon>
             <span slot="title">&nbsp;&nbsp;首页</span>
@@ -30,12 +19,19 @@
           </el-submenu>
         </el-menu>
       </el-aside>
-      <el-container style="height: 680px;">
-        <el-main>
-          <!-- 加上keep-alive导航点击才不会报错... -->
-          <keep-alive>
-            <router-view></router-view>
-          </keep-alive>
+      <el-container>
+        <el-header class="top-nav-header">
+          <el-menu class="top-nav-menu" mode="horizontal">
+            <el-menu-item index="1">我的工作台</el-menu-item>
+            <el-submenu index="5" style="float: right;">
+              <template slot="title">胡胜钧</template>
+              <el-menu-item index="5-1" @click.native="changePass"><Icon type="edit"></Icon>&nbsp;&nbsp;修改密码</el-menu-item>
+              <el-menu-item index="5-2" @click.native="logout"><Icon type="log-out"></Icon>&nbsp;&nbsp;退出登录</el-menu-item>
+            </el-submenu>
+          </el-menu>
+        </el-header>
+        <el-main style="border-top: 1px solid #eee;">
+          <router-view></router-view>        
         </el-main>
         <el-footer>
           <a href="https://github.com/haosijiahsj/hello-world" target="_blank">
@@ -43,18 +39,25 @@
           </a>
         </el-footer>
       </el-container>
-    </el-container>
   </el-container>
 </template>
 
-<style>
+<style scoped>
 .top-nav-menu {
-  border-bottom: 1px solid #eee;
-  z-index: 999;
+  border: 0;
 }
 
 .left-nav-menu {
   height: 100%;
+}
+
+.left-nav-header-box {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  height: 61px;
+  line-height: 61px;
+  border-bottom: 1px solid #eee
 }
 
 .el-footer {
@@ -71,6 +74,25 @@
 
 <script>
 export default {
-  name: "Main"
+  name: "Main",
+  data() {
+    return {
+      isCollapse: false
+    }
+  },
+  methods: {
+    changePass() {
+      console.log("修改密码");
+    },
+    logout() {
+      this.$confirm('确定要退出登录吗？', '退出登录', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$router.push({ path: "/login" });
+        });
+    }
+  }
 };
 </script>

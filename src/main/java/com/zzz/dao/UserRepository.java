@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -29,5 +30,13 @@ public interface UserRepository extends Repository<UserPo, Integer>, JpaSpecific
     Page<UserPo> findAll(Pageable pageable);
 
     void deleteById(Integer id);
+
+    @Modifying
+    @Query("UPDATE UserPo u " +
+            "SET u.username = ?2, u.password = ?3, u.name = ?4, u.sex = ?5, u.tel = ?6, u.updateTime = ?7 , u.status = ?8 " +
+            "WHERE u.id = ?1")
+    void update(Integer id, String username, String password, String name, Integer sex, String tel, LocalDateTime updateTime, Integer status);
+
+    UserPo findById(Integer id);
 
 }

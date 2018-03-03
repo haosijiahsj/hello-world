@@ -81,7 +81,7 @@ export default {
         });
         return;
       }
-      var url = process.env.API_HOST+ "/user/registry";
+      var url = "/user/registry";
       var self = this;
       this.$axios({
         url: url,

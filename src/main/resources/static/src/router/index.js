@@ -7,6 +7,7 @@ import Main from '@/pages/Main'
 import DashBoard from '@/pages/DashBoard'
 import UserQuery from '@/pages/user/Query'
 import UserCreate from '@/pages/user/Create'
+import UserEdit from '@/pages/user/edit'
 
 Vue.use(Router)
 
@@ -39,6 +40,11 @@ let routes = [
         path: 'user/create',
         name: 'UserCreate',
         component: UserCreate
+      },
+      {
+        path: 'user/edit/:id',
+        name: 'UserEdit',
+        component: UserEdit
       }
     ]
   } 

@@ -63,7 +63,7 @@ export default {
       }
       let self = this;
       console.log(process.env.API_HOST);
-      var url = process.env.API_HOST + "/user/login";
+      var url = "/user/login";
       this.$axios.get(url, {
         params: {
           username: self.username,

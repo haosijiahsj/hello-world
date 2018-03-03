@@ -35,7 +35,7 @@
   export default {
     data() {
       var checkUsername = (rule, value, callback) => {
-        var url = process.env.API_HOST + "/user/findByUsername?username=" + value;
+        var url = "/user/findByUsername?username=" + value;
           this.$axios.get(url)
           .then((res) => {
             if (res.data.content != null) {
@@ -80,7 +80,7 @@
         self = this;
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            var url = process.env.API_HOST + "/user/create";
+            var url = "/user/create";
             this.$axios.post(url, JSON.stringify(self.form), {headers: {"Content-Type": "application/json"}})
             .then((res) => {
               if (res.data.code == 200) {

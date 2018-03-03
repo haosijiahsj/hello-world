@@ -26,4 +26,8 @@ public interface UserService {
 
     void delete(Integer id);
 
+    void update(UserVo userVo);
+
+    UserVo findById(Integer id);
+
 }

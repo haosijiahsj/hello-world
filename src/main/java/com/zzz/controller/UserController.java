@@ -88,11 +88,23 @@ public class UserController {
         return ResponseEntity.ok();
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity delete(Integer id) {
         userService.delete(id);
 
         return ResponseEntity.ok();
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity update(@RequestBody UserVo userVo) {
+        userService.update(userVo);
+
+        return ResponseEntity.ok();
+    }
+
+    @GetMapping("/findById")
+    public ResponseEntity findById(Integer id) {
+        return ResponseEntity.ok(userService.findById(id));
     }
 
 }

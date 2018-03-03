@@ -35,7 +35,7 @@
             <el-table-column header-align="center" align="center" label="操作" width="180">
             <template slot-scope="scope">
                 <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row, tableData)">删除</el-button>
             </template>
             </el-table-column>
         </el-table>
@@ -58,7 +58,7 @@ export default {
   name: "UserQuery",
   data() {
     return {
-      queryValue: '',
+      queryValue: "",
       tableData: [],
       currentPage: 1,
       pageSizes: [10, 20],
@@ -67,58 +67,91 @@ export default {
     };
   },
   methods: {
-      loadData(username, page, size) {
-          var url = process.env.API_HOST + "/user/findUserByPage";
-          this.tableData = [];
-          this.$axios.get(url, {
-            params: {
-                username: username,
-                page: page,
-                size: size
-            }
+    loadData(username, page, size) {
+      var url = "/user/findUserByPage";
+      this.tableData = [];
+      this.$axios
+        .get(url, {
+          params: {
+            username: username,
+            page: page,
+            size: size
+          }
         })
         .then(res => {
-            var json = res.data.content;
-            if (res.data.code == 200) {
-                this.tableData = json.content;
-                this.total = json.totalElements; 
-            } else {
-                this.$message.error(res.data.msg);
-            }                    
+          var json = res.data.content;
+          if (res.data.code == 200) {
+            this.tableData = json.content;
+            this.total = json.totalElements;
+          } else {
+            this.$message.error(res.data.msg);
+          }
         })
         .catch(err => {
-            this.$message.error(err);
+          this.$message.error(err);
         });
-      },
-      query() {          
-          this.loadData(this.queryValue, this.currentPage, this.pageSize)
-      },
-      handleSizeChange(val) {
-          this.pageSize = val;
-          this.loadData(this.queryValue, this.currentPage, this.pageSize);
-      },
-      handleCurrentChange(val) {
-          this.currentPage = val;
-          this.loadData(this.queryValue, this.currentPage, this.pageSize);
-      }
+    },
+    query() {
+      this.loadData(this.queryValue, this.currentPage, this.pageSize);
+    },
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.loadData(this.queryValue, this.currentPage, this.pageSize);
+    },
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.loadData(this.queryValue, this.currentPage, this.pageSize);
+    },
+    handleEdit(index, row) {
+      this.$router.push({ name: "UserEdit", params: { id: row.id } });
+    },
+    handleDelete(index, row, tableData) {
+      var url = process.env.API_HOST + "/user/delete";
+      this.$confirm("确定要删除该条数据？", "确定删除", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        var url = process.env.API_HOST + "/user/delete";;
+        this.$axios({
+            url: url,
+            method: "delete",
+            params: {
+              id: row.id
+            }
+          })
+          .then(res => {
+            if (res.data.code == 200) {
+              tableData.splice(index, 1);
+              this.$message({
+                message: "删除成功！",
+                type: "success"
+              });
+            } else {
+              this.$message.error(res.data.msg);
+            }
+          })
+          .catch();
+      });
+    }
   }
 };
 </script>
 
 <style scoped>
-  .query-box {
-      width: 100%;
-      margin-top: 15px;
-      margin-bottom: 12px;
-  }
+.query-box {
+  width: 100%;
+  margin-top: 15px;
+  margin-bottom: 12px;
+}
 
-  .query-inp {
-      width: 200px;
-  }
+.query-inp {
+  width: 200px;
+}
 
-  .el-pagination {
-      text-align: right;
-      margin-top: 5px;
-      margin-bottom: 20px;
-  }
+.el-pagination {
+  text-align: right;
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
 </style>

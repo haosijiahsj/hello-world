@@ -17,11 +17,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,6 +29,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -127,6 +126,14 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
+    @Override
+    public void update(UserVo userVo) {
+        Preconditions.checkArgument(userVo != null, "入参userVo不能为空！");
+
+        userRepository.update(userVo.getId(), userVo.getUsername(), userVo.getPassword(), userVo.getName(), userVo.getSex(),
+                userVo.getTel(), userVo.getUpdateTime(), userVo.getStatus());
+    }
+
     /**
      * 创建动态查询条件
      * @param userPo
@@ -147,4 +154,18 @@ public class UserServiceImpl implements UserService {
         };
     }
 
+    @Override
+    public UserVo findById(Integer id) {
+        Preconditions.checkArgument(id != null, "入参id不能为空！");
+
+        UserPo userPo = userRepository.findById(id);
+        if (userPo == null) {
+            return null;
+        }
+
+        UserVo userVo = new UserVo();
+        BeanUtils.copyProperties(userPo, userVo);
+
+        return userVo;
+    }
 }
