@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div style="z-index: 9999;">
         <el-breadcrumb separator="/">
-          <el-breadcrumb-item :to="{ path: '/main' }">首页</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: '/main/dashboard' }">首页</el-breadcrumb-item>
           <el-breadcrumb-item>用户</el-breadcrumb-item>
           <el-breadcrumb-item>查询用户</el-breadcrumb-item>
         </el-breadcrumb>
@@ -10,11 +10,11 @@
           <el-button type="primary" icon="el-icon-search" size="small" @click="query"></el-button>
         </div>
         <el-table :data="tableData" border stripe highlight-current-row>
-            <el-table-column header-align="center" align="center" prop="username" label="账号" width="180">
+            <el-table-column header-align="center" align="center" prop="username" label="账号">
             </el-table-column>
-            <el-table-column header-align="center" align="center" prop="name" label="姓名" width="180">
+            <el-table-column header-align="center" align="center" prop="name" label="姓名">
             </el-table-column>
-            <el-table-column header-align="center" align="center" prop="sex" label="性别" width="80">
+            <el-table-column header-align="center" align="center" prop="sex" label="性别">
                 <template slot-scope="scope">
                     <el-tag size="medium" :type="scope.row.sex == 1 ? 'success' : 'danger'">
                         {{ scope.row.sex == 1 ? '男' : '女' }}
@@ -25,7 +25,7 @@
             </el-table-column>
             <el-table-column header-align="center" align="center" prop="createTime" label="创建时间">
             </el-table-column>
-            <el-table-column header-align="center" align="center" prop="status" label="状态" width="100">
+            <el-table-column header-align="center" align="center" prop="status" label="状态">
                 <template slot-scope="scope">
                     <el-tag size="medium" :type="scope.row.status == 1 ? 'success' : 'danger'">
                         {{ scope.row.status == 1 ? '可用' : '禁用' }}

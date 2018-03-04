@@ -6,6 +6,7 @@
       <el-breadcrumb-item>编辑用户</el-breadcrumb-item>
     </el-breadcrumb>
     <el-form :model="form" ref="form" status-icon :rules="rules" label-width="80px">
+      <input type="hidden" v-model="form.id">
       <el-form-item label="用户名：" prop="username">
         <el-input v-model="form.username"></el-input>
       </el-form-item>
@@ -56,6 +57,7 @@
       };
       return {
         form: {
+          id: this.$route.params.id,
           username: '',
           password: '',
           name: '',

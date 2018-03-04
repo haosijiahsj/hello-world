@@ -23,7 +23,7 @@
         <el-header class="top-nav-header">
           <el-menu class="top-nav-menu" mode="horizontal">
             <el-menu-item index="1">我的工作台</el-menu-item>
-            <el-submenu index="5" style="float: right;">
+            <el-submenu index="5" style="float: right;">              
               <template slot="title">胡胜钧</template>
               <el-menu-item index="5-1" @click.native="changePass"><Icon type="edit"></Icon>&nbsp;&nbsp;修改密码</el-menu-item>
               <el-menu-item index="5-2" @click.native="logout"><Icon type="log-out"></Icon>&nbsp;&nbsp;退出登录</el-menu-item>
@@ -39,6 +39,7 @@
           </a>
         </el-footer>
       </el-container>
+      <Spin size="large" fix v-if="spinShow"></Spin>
   </el-container>
 </template>
 
@@ -77,8 +78,14 @@ export default {
   name: "Main",
   data() {
     return {
+      spinShow: true,
       isCollapse: false
     }
+  },
+  mounted() {
+    setTimeout(() => {
+      this.spinShow = false;
+    }, 2000);
   },
   methods: {
     changePass() {
