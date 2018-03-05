@@ -17,6 +17,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity exceptionHandler(HttpServletRequest request, Exception ex) {
+        ex.printStackTrace();
         log.error(ex.getMessage());
         return ResponseEntity.serverError(ex.getMessage());
     }
