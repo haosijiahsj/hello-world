@@ -3,6 +3,7 @@ package com.zzz.model.vo;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author 胡胜钧
@@ -21,5 +22,6 @@ public class UserVo {
     private LocalDateTime updateTime;
     private LocalDateTime loginTime;
     private Integer status;
+    private List<UserRoleVo> userRoles;
 
 }

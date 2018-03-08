@@ -12,5 +12,6 @@ public class RolePermissionVo {
     private Integer id;
     private Integer permission;
     private Integer role;
+    private PermissionVo permissionVo;
 
 }

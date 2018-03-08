@@ -12,5 +12,6 @@ public class UserRoleVo {
     private Integer id;
     private Integer user;
     private Integer role;
+    private RoleVo roleVo;
 
 }

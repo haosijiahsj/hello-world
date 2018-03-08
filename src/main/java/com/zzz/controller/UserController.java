@@ -28,33 +28,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/login")
-    public ResponseEntity login(HttpSession session, String username, String password) {
-//        UserVo userVo = userService.findByUsername(username);
-//
-//        if (userVo == null) {
-//            return ResponseEntity.of(301, "用户不存在！");
-//        }
-//        if (!password.equals(userVo.getPassword())) {
-//            return ResponseEntity.of(301, "密码错误！");
-//        }
-//
-//        session.setAttribute("user", userVo);
+    @GetMapping("/getCurrentUser")
+    public ResponseEntity getCurrentUser(HttpSession session) {
+        UserVo userVo = (UserVo) session.getAttribute("user");
 
-        ResponseEntity responseEntity = ResponseEntity.ok();
-        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-        //获取当前的Subject
-        Subject currentUser = SecurityUtils.getSubject();
-        try {
-            currentUser.login(token);
-        } catch (Exception ex) {
-            if (ex instanceof UnknownAccountException) {
-                responseEntity = ResponseEntity.of(301, "用户不存在");
-            } else if (ex instanceof IncorrectCredentialsException) {
-                responseEntity = ResponseEntity.of(301, "密码错误！");
-            }
-        }
-        return responseEntity;
+        return ResponseEntity.ok(userVo);
     }
 
     @PostMapping("/registry")

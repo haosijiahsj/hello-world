@@ -24,7 +24,7 @@
           <el-menu class="top-nav-menu" mode="horizontal">
             <el-menu-item index="1">我的工作台</el-menu-item>
             <el-submenu index="5" style="float: right;">              
-              <template slot="title">胡胜钧</template>
+              <template slot="title">{{ username }}</template>
               <el-menu-item index="5-1" @click.native="changePass"><Icon type="edit"></Icon>&nbsp;&nbsp;修改密码</el-menu-item>
               <el-menu-item index="5-2" @click.native="logout"><Icon type="log-out"></Icon>&nbsp;&nbsp;退出登录</el-menu-item>
             </el-submenu>
@@ -58,7 +58,7 @@
   font-weight: 700;
   height: 61px;
   line-height: 61px;
-  border-bottom: 1px solid #eee
+  border-bottom: 1px solid #eee;
 }
 
 .el-footer {
@@ -79,10 +79,16 @@ export default {
   data() {
     return {
       spinShow: true,
-      isCollapse: false
-    }
+      isCollapse: false,
+      username: '呵'
+    };
   },
   mounted() {
+    var self = this;
+    var url = "/user/getCurrentUser";
+    this.$axios.get(url).then(res => {
+      self.username = res.data.content.username;
+    });
     setTimeout(() => {
       this.spinShow = false;
     }, 2000);
@@ -92,13 +98,16 @@ export default {
       console.log("修改密码");
     },
     logout() {
-      this.$confirm('确定要退出登录吗？', '退出登录', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
+      this.$confirm("确定要退出登录吗？", "退出登录", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {        
+        var url = "/auth/logout";
+        this.$axios.get(url).then(res => {
           this.$router.push({ path: "/login" });
-        });
+        });        
+      });
     }
   }
 };
