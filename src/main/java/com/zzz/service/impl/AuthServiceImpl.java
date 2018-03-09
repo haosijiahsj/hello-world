@@ -2,6 +2,7 @@ package com.zzz.service.impl;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.zzz.dao.*;
 import com.zzz.exceptions.IncorrectCredentialsException;
 import com.zzz.exceptions.UnknownAccountException;
@@ -16,9 +17,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -45,8 +49,10 @@ public class AuthServiceImpl implements AuthService {
     private RolePermissionRepository rolePermissionRepository;
 
     @Override
-    public void login(HttpSession session, String username, String password) {
+    public void login(String username, String password) {
         Preconditions.checkArgument(StringUtils.isNotBlank(username), "入参username不能为空！");
+
+        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
 
         UserPo userPo = userRepository.findByUsername(username);
 
@@ -67,10 +73,11 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void logout(HttpSession session) {
+    public void logout() {
+        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         UserVo userVo = (UserVo) session.getAttribute("user");
         session.removeAttribute("user");
-        log.info("用户：{}退出登录成功！", userVo.getUsername());
+        log.info("用户：{}已退出登录！", userVo.getUsername());
     }
 
     @Override
@@ -82,7 +89,7 @@ public class AuthServiceImpl implements AuthService {
             return false;
         }
 
-        List<String> urls = Lists.newArrayList();
+        Set<String> urls = Sets.newHashSet();
         authContext.getUserVo().getUserRoles().forEach(userRoleVo -> {
             userRoleVo.getRoleVo().getRolePermissions().forEach(rolePermissionVo -> {
                 urls.add(rolePermissionVo.getPermissionVo().getUrl());
@@ -93,6 +100,7 @@ public class AuthServiceImpl implements AuthService {
             log.info("用户：{}没有任何权限！", authContext.getUserVo().getUsername());
             return false;
         } else {
+            // 应该使用正则匹配
             if (!urls.contains(authContext.getUri())) {
                 log.info("用户：{}没有当前uri：{}的权限", authContext.getUserVo().getUsername(), authContext.getUri());
                 return false;

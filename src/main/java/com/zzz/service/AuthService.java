@@ -10,9 +10,9 @@ import javax.servlet.http.HttpSession;
  */
 public interface AuthService {
 
-    void login(HttpSession session, String username, String password);
+    void login(String username, String password);
 
-    void logout(HttpSession session);
+    void logout();
 
     boolean authenticate(AuthContext authContext);
 

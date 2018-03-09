@@ -32,7 +32,7 @@ public class AuthHandlerInterceptor implements HandlerInterceptor {
 
         if (userVo == null) {
             log.info("用户未登录！");
-            response.sendError(HttpStatus.UNAUTHORIZED.value(), "用户未登录！");
+            response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
             return false;
         }
 
@@ -42,7 +42,7 @@ public class AuthHandlerInterceptor implements HandlerInterceptor {
 
         boolean isPermission = authService.authenticate(authContext);
         if (!isPermission) {
-            response.sendError(402, "没有权限访问！");
+            response.sendError(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.getReasonPhrase());
         }
         return isPermission;
     }

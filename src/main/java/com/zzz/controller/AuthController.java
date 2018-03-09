@@ -23,9 +23,9 @@ public class AuthController {
     private AuthService authService;
 
     @GetMapping("/login")
-    public ResponseEntity login(HttpSession session, String username, String password) {
+    public ResponseEntity login(String username, String password) {
         try {
-            authService.login(session, username, password);
+            authService.login(username, password);
         } catch (Exception ex) {
             if (ex instanceof UnknownAccountException) {
                 return ResponseEntity.of(401, "用户不存在！");
@@ -37,8 +37,8 @@ public class AuthController {
     }
 
     @GetMapping("/logout")
-    public ResponseEntity logout(HttpSession session) {
-        authService.logout(session);
+    public ResponseEntity logout() {
+        authService.logout();
         return ResponseEntity.ok();
     }
 
