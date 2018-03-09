@@ -106,13 +106,12 @@ export default {
       this.$router.push({ name: "UserEdit", params: { id: row.id } });
     },
     handleDelete(index, row, tableData) {
-      var url = process.env.API_HOST + "/user/delete";
       this.$confirm("确定要删除该条数据？", "确定删除", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-        var url = process.env.API_HOST + "/user/delete";;
+        var url = "/user/delete";;
         this.$axios({
             url: url,
             method: "delete",

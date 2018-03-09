@@ -38,7 +38,7 @@ axios.interceptors.response.use(data => {
     setTimeout(() => {
       router.push({ path: "/login" });
     }, 3000);
-  } else if (error.response.status == 402) {
+  } else if (error.response.status == 403) {
     Message.error({ message: '没有权限访问！' });
   }
   return Promise.reject(error);
