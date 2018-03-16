@@ -1,8 +1,6 @@
 package com.zzz.service.impl;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.zzz.dao.*;
 import com.zzz.exceptions.IncorrectCredentialsException;
 import com.zzz.exceptions.UnknownAccountException;
@@ -20,10 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author hushengjun
@@ -85,30 +82,34 @@ public class AuthServiceImpl implements AuthService {
         log.info("鉴定用户：{}是否拥有uri：{}的权限", authContext.getUserVo().getUsername(), authContext.getUri());
 
         if (CollectionUtils.isEmpty(authContext.getUserVo().getUserRoles())) {
-            log.info("用户：{}没有任何权限！", authContext.getUserVo().getUsername());
+            log.info("用户：{}没有找到任何角色信息！", authContext.getUserVo().getUsername());
             return false;
         }
 
-        Set<String> urls = Sets.newHashSet();
-        authContext.getUserVo().getUserRoles().forEach(userRoleVo -> {
-            userRoleVo.getRoleVo().getRolePermissions().forEach(rolePermissionVo -> {
-                urls.add(rolePermissionVo.getPermissionVo().getUrl());
-            });
-        });
+        for (UserRoleVo userRoleVo : authContext.getUserVo().getUserRoles()) {
+            for (RolePermissionVo rolePermissionVo : userRoleVo.getRoleVo().getRolePermissions()) {
+                if (authContext.getUri().equals(rolePermissionVo.getPermissionVo().getUrl())) {
+                    if (!userRoleVo.getRoleVo().getAvailable()) {
+                        log.info("该角色：{}已被禁用！", userRoleVo.getRoleVo().getName());
+                        return false;
+                    }
 
-        if (CollectionUtils.isEmpty(urls)) {
-            log.info("用户：{}没有任何权限！", authContext.getUserVo().getUsername());
-            return false;
-        } else {
-            // 应该使用正则匹配
-            if (!urls.contains(authContext.getUri())) {
-                log.info("用户：{}没有当前uri：{}的权限", authContext.getUserVo().getUsername(), authContext.getUri());
-                return false;
+                    log.info("鉴权通过！");
+                    return true;
+                }
             }
         }
 
-        log.info("鉴权通过！");
-        return true;
+        log.info("没有访问uri: {}的权限！", authContext.getUri());
+        return false;
+    }
+
+    @Override
+    public boolean checkLogin() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpSession session = request.getSession();
+
+        return false;
     }
 
     /**

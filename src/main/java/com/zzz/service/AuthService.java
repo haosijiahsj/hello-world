@@ -16,4 +16,6 @@ public interface AuthService {
 
     boolean authenticate(AuthContext authContext);
 
+    boolean checkLogin();
+
 }

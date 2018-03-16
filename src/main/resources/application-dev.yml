@@ -18,7 +18,7 @@ spring:
     test-on-return: false
     filters: stat,wall,slf4j
   jpa:
-    show-sql: true
+    show-sql: false
   mail:
     host: smtp.qq.com
     username: 1017547773@qq.com

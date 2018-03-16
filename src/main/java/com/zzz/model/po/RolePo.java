@@ -20,4 +20,10 @@ public class RolePo {
     @Column(name = "name_")
     private String name;
 
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "available")
+    private Boolean available;
+
 }

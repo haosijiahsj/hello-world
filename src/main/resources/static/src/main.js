@@ -34,10 +34,10 @@ axios.interceptors.response.use(data => {
   return data;
 }, error => {
   if (error.response.status == 401) {
-    Message.error({ message: '未登录，3秒后跳转至登录页面！' });
+    Message.error({ message: '未登录，2秒后跳转至登录页面！' });
     setTimeout(() => {
       router.push({ path: "/login" });
-    }, 3000);
+    }, 2000);
   } else if (error.response.status == 403) {
     Message.error({ message: '没有权限访问！' });
   }

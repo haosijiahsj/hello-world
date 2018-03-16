@@ -16,7 +16,8 @@ import java.util.List;
 @Component
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    private static final List<String> EXCLUDE_PATH_PATTERNS = ImmutableList.of("/static/**", "/index.html", "/error", "/auth/login", "/auth/logout");
+    private static final List<String> EXCLUDE_PATH_PATTERNS = ImmutableList.of("/static/**", "/index.html", "/error",
+            "/auth/login", "/auth/logout", "/user/registry");
 
     @Autowired
     private AuthHandlerInterceptor handlerInterceptor;
