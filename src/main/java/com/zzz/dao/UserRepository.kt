@@ -20,7 +20,7 @@ interface UserRepository : Repository<UserPo, Int>, JpaSpecificationExecutor<Use
 
     fun save(userPo: UserPo)
 
-    fun findByUsername(username: String): UserPo
+    fun findByUsername(username: String): UserPo?
 
     @Modifying
     @Query("UPDATE UserPo u SET u.password = ?2 WHERE u.username = ?1")
@@ -38,6 +38,6 @@ interface UserRepository : Repository<UserPo, Int>, JpaSpecificationExecutor<Use
             "WHERE u.id = ?1")
     fun update(id: Int?, username: String, password: String, name: String, sex: Int?, tel: String, updateTime: LocalDateTime, status: Int?)
 
-    fun findById(id: Int?): UserPo
+    fun findById(id: Int?): UserPo?
 
 }

@@ -10,6 +10,6 @@ import org.springframework.data.repository.Repository
  */
 interface RoleRepository : Repository<RolePo, Int> {
 
-    fun findById(id: Int?): RolePo
+    fun findById(id: Int?): RolePo?
 
 }

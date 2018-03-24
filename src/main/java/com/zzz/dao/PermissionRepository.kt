@@ -10,7 +10,7 @@ import org.springframework.data.repository.Repository
  */
 interface PermissionRepository : Repository<PermissionPo, Int> {
 
-    fun findById(id: Int?): PermissionPo
+    fun findById(id: Int?): PermissionPo?
 
     fun findByIdIn(ids: List<Int>): List<PermissionPo>
 
