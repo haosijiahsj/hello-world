@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.Predicate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -131,7 +132,7 @@ public class UserServiceImpl implements UserService {
         Preconditions.checkArgument(userVo != null, "入参userVo不能为空！");
 
         userRepository.update(userVo.getId(), userVo.getUsername(), userVo.getPassword(), userVo.getName(), userVo.getSex(),
-                userVo.getTel(), userVo.getUpdateTime(), userVo.getStatus());
+                userVo.getTel(), LocalDateTime.now(), userVo.getStatus());
     }
 
     /**
